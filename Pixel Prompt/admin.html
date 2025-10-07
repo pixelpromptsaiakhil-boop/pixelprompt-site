@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="robots" content="noindex,nofollow">
+  <title>PixelPrompt — Admin Dashboard</title>
+
+  <!-- Global styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+
+  <!-- admin-specific inline CSS (keeps look identical to earlier) -->
+  <style>
+    /* admin-specific overrides */
+    main.admin { max-width: 1200px; margin: 28px auto; padding: 20px; }
+    .admin h1 { margin-bottom: 12px; }
+    .admin .row { display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap; }
+    .admin .col { flex:1; min-width:280px; }
+    table.admin-table{ width:100%; border-collapse:collapse; margin-top:16px; }
+    table.admin-table th, table.admin-table td{ padding:10px; border-bottom:1px solid rgba(0,0,0,0.06); text-align:left; vertical-align:middle; }
+    th.sortable { cursor: pointer; user-select: none; }
+    th.sortable:after { content: " \u2195"; font-size: 0.8rem; color: #9CA3AF; margin-left:6px; }
+    th.sort-asc:after { content: " \u2191"; color: #374151; }
+    th.sort-desc:after { content: " \u2193"; color: #374151; }
+
+    .thumb{ width:88px; height:64px; object-fit:cover; border-radius:8px; display:block; }
+    .small-btn{ padding:6px 10px; border-radius:8px; cursor:pointer; }
+    .muted { color: var(--secondary-text-color, #6b7280); font-size:0.95rem; }
+    input[type="file"] { padding:6px 0; }
+    .hidden { display:none !important; }
+    #uploader { background: var(--card-background); padding:16px; border-radius:10px; box-shadow: var(--shadow); }
+    #image-rows tr:hover { background: rgba(0,0,0,0.02); }
+    .actions button { margin-right:6px; }
+    #upload-status { margin-left:8px; font-weight:600; }
+
+    /* hero toggle */
+    .hero-toggle { width: 40px; height: 24px; position: relative; display: inline-block; }
+    .hero-toggle input { display: none; }
+    .hero-slider {
+      position: absolute; left:2px; top:2px; width:20px; height:20px; background:#fff; border-radius:50%;
+      transition: left .18s, background .18s;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+    }
+    .hero-toggle .track {
+      width: 100%; height:100%; background: #e5e7eb; border-radius: 999px; display:block;
+    }
+    .hero-toggle input:checked + .track { background: var(--primary-color); }
+    .hero-toggle input:checked + .track + .hero-slider { left: 18px; background: white; }
+
+    /* small filter area */
+    .admin-controls-top { display:flex; gap:8px; align-items:center; margin-bottom:8px; }
+    .filter-select { padding:8px 10px; border-radius:8px; border:1px solid rgba(0,0,0,0.08); background:var(--card-background); }
+    .note { font-size:0.9rem; color:var(--secondary-text-color); margin-left:8px; }
+
+    /* maintain mobile responsiveness */
+    @media (max-width:900px) {
+      main.admin { padding:12px; margin:18px auto; }
+      .admin .row { flex-direction:column; }
+      .admin .col { min-width:100%; }
+    }
+  </style>
+
+  <!-- Firebase Compat SDKs (admin uses compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+</head>
+
+<body class="theme-light">
+  <main class="admin">
+    <h1>PixelPrompt — Admin Dashboard</h1>
+
+    <section id="auth-box" style="margin-bottom:18px;">
+      <div class="row">
+        <div class="col">
+          <div id="auth-status" class="muted">Not signed in</div>
+        </div>
+        <div class="col" style="text-align:right;">
+          <button id="google-login-btn" class="small-btn">Sign in with Google</button>
+          <button id="admin-signout" class="small-btn hidden">Sign out</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="admin-controls" class="row">
+      <div id="uploader" class="col">
+        <h3 id="form-title">Upload new image</h3>
+        <form id="upload-form">
+          <input id="doc-id" type="hidden" value="">
+
+          <label class="muted">Image file</label><br>
+          <input id="file-input" type="file" accept="image/*"><br><br>
+          <img id="file-preview" class="thumb hidden" alt="file preview" style="margin-top:8px;">
+
+          <label class="muted">Title</label><br>
+          <input id="title" type="text" required style="width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.08)"><br><br>
+
+          <label class="muted">Prompt</label><br>
+          <textarea id="prompt" rows="3" style="width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.08)"></textarea><br><br>
+
+          <label class="muted">Prompt Suggestions (comma separated)</label><br>
+          <input id="suggestions" type="text" placeholder="Increase contrast, add cinematic lighting, ..." style="width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.08)"><br><br>
+
+          <label class="muted">Tags (comma separated)</label><br>
+          <input id="tags" type="text" style="width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.08)"><br><br>
+
+          <label class="muted">Filter / Category</label><br>
+          <input id="filter" type="text" style="width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.08)"><br><br>
+
+          <label class="muted">Credits (URL or text)</label><br>
+          <input id="credits" type="text" placeholder="https://..." style="width:100%; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.08)"><br><br>
+
+          <button id="upload-btn" type="submit" class="small-btn">Save</button>
+          <button id="cancel-edit" type="button" class="small-btn hidden">Cancel</button>
+          <span id="upload-status" class="muted"></span>
+        </form>
+      </div>
+
+      <div class="col" style="min-width:420px;">
+        <h3>Quick actions</h3>
+
+        <div class="admin-controls-top">
+          <select id="filter-select" class="filter-select" aria-label="Filter images (includes Hero)">
+            <option value="All">All</option>
+            <option value="Hero">Hero</option>
+          </select>
+
+          <input id="searchBar" placeholder="Search title / tags / filter..." style="flex:1; padding:8px; border-radius:8px; border:1px solid rgba(0,0,0,0.08)">
+
+          <button id="refresh-btn" class="small-btn">Refresh</button>
+          <span class="note">Tip: Click column headings to sort</span>
+        </div>
+
+        <div id="admin-table">
+          <table class="admin-table" aria-label="Images">
+            <thead>
+              <tr>
+                <th class="sortable" data-field="title">Title</th>
+                <th class="sortable" data-field="filter">Filter</th>
+                <th class="sortable" data-field="views">Views</th>
+                <th class="sortable" data-field="likesCount">Likes</th>
+                <th>Tags</th>
+                <th>Hero</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="image-rows"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- config + admin logic -->
+  <script src="js/firebase-config.js"></script>
+  <script src="js/admin.js"></script>
+</body>
+</html>

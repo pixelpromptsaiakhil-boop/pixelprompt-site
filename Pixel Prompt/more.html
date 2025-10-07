@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="PixelPrompt — AI prompt library, tutorials, news and latest AI images. Learn prompting, follow updates, and browse the latest generated images." />
+  <title>More — PixelPrompt</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    /* small page-specific tweaks to keep icons uniform and layout tidy */
+    .more-grid{display:grid;grid-template-columns:1fr 320px;gap:1.25rem;align-items:start;}
+    .more-panel{background:var(--card-background);padding:1rem;border-radius:12px;box-shadow:var(--shadow);}
+    .more-list{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.5rem;}
+    .more-list a{display:block;padding:.6rem .8rem;border-radius:8px;text-decoration:none;color:var(--text-color);border:1px solid var(--border-color);}
+    .more-list a:hover{background:var(--border-color);}
+
+    .social-row{display:flex;gap:.75rem;align-items:center;margin-top:.5rem;}
+    .social-link{display:inline-flex;align-items:center;justify-content:center;border-radius:8px;padding:.4rem;background:transparent;border:1px solid var(--border-color);text-decoration:none;}
+    .social-link img.social-icon{width:28px;height:28px;display:block;}
+
+    .about-text p{margin:0 0 .6rem 0;color:var(--secondary-text-color);line-height:1.45;}
+    .collections-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.9rem;margin-top:.6rem;}
+    .collection-card{padding:.6rem;border-radius:10px;background:var(--card-background);border:1px solid var(--border-color);box-shadow:var(--shadow);display:flex;flex-direction:column;gap:.5rem;cursor:pointer;}
+    .collection-card h4{margin:0;font-size:1rem;}
+    .collection-card p{margin:0;font-size:.85rem;color:var(--secondary-text-color);}
+    .collection-card a{color:inherit;text-decoration:none;display:block;}
+
+    @media (max-width:900px){
+      .more-grid{grid-template-columns:1fr;}
+    }
+  </style>
+
+  <!-- Firebase compat SDKs (needed for Firestore access used by the page script) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+</head>
+<body class="theme-light">
+  <nav class="nav-left" aria-label="Primary navigation">
+    <a href="index.html" class="nav-item nav-logo" title="PixelPrompt home">
+      <img id="logo-icon" src="assets/light/logo-icon.svg" alt="PixelPrompt" class="logo-icon">
+    </a>
+
+    <a href="index.html" class="nav-item" data-tooltip="Home" title="Home">
+      <img class="icon home-icon" src="assets/light/home.svg" alt="Home">
+    </a>
+
+    <a href="collections.html" class="nav-item" data-tooltip="Collections" title="Collections">
+      <img class="icon" src="assets/light/collections.svg" alt="Collections">
+    </a>
+
+    <a href="liked.html" class="nav-item" data-tooltip="Liked" title="Liked">
+      <img class="icon" src="assets/light/heart-outline.svg" alt="Liked">
+    </a>
+
+    <a href="more.html" class="nav-item active" data-tooltip="More" title="More">
+      <img class="icon" src="assets/light/more.svg" alt="More">
+    </a>
+  </nav>
+
+  <main class="main-content">
+    <div class="content-container">
+      <header class="header" role="banner">
+        <a href="index.html" class="header-logo" title="PixelPrompt">
+          <img id="logo-full" src="assets/light/logo-full.svg" alt="PixelPrompt" class="logo-full">
+        </a>
+
+        <img class="logo-icon-small-top" src="assets/light/logo-icon.svg" alt="PixelPrompt">
+
+        <div class="search-bar" role="search">
+          <img class="icon-small" src="assets/light/search.svg" alt="" aria-hidden="true">
+          <input type="search" id="search-input" placeholder="Search for prompts, tags, or themes..." aria-label="Search">
+        </div>
+
+        <div class="header-right" role="region" aria-label="Header actions">
+          <button id="theme-toggle" class="header-button theme-toggle-btn" data-tooltip="Toggle Theme" aria-label="Toggle theme">
+            <img id="theme-icon" class="icon-small" src="assets/light/moon.svg" alt="Toggle theme icon">
+          </button>
+
+          <button id="notificationsBtn" class="header-button" data-tooltip="Notifications" aria-label="Notifications">
+            <img class="icon-small bell-icon" src="assets/light/bell.svg" alt="Notifications">
+          </button>
+
+          <button id="login-btn" class="header-button login-btn" data-tooltip="Sign in / Account" aria-label="Sign in">Log in</button>
+        </div>
+      </header>
+
+      <div class="more-grid">
+        <!-- left: content panels -->
+        <div>
+          <div class="more-panel about-text">
+            <h2>About PixelPrompt</h2>
+            <p>Pixel Prompt is an AI image prompt library created by two brothers — <strong>K Sai Swaroop</strong> and <strong>Akhil</strong>. We curate and publish prompts that help creators reproduce visual styles with generative models (e.g. Gemini, GPT image models).</p>
+            <p>Use prompts to generate your own images with AI. Do not copy or reuse other people's photos without permission. This site is a prompt library — it hosts prompt text and previews only.</p>
+
+            <div class="social-row" aria-label="Follow us">
+              <a class="social-link" href="https://facebook.example" target="_blank" rel="noopener" title="Follow on Facebook">
+                <img class="social-icon" src="assets/light/facebook.svg" alt="Facebook">
+              </a>
+              <a class="social-link" href="https://x.example" target="_blank" rel="noopener" title="Follow on X">
+                <img class="social-icon" src="assets/light/x.svg" alt="X">
+              </a>
+              <a class="social-link" href="https://youtube.example" target="_blank" rel="noopener" title="YouTube">
+                <img class="social-icon" src="assets/light/youtube.svg" alt="YouTube">
+              </a>
+              <a class="social-link" href="https://instagram.example" target="_blank" rel="noopener" title="Instagram">
+                <img class="social-icon" src="assets/light/instagram.svg" alt="Instagram">
+              </a>
+            </div>
+          </div>
+
+          <div class="more-panel" style="margin-top:1rem;">
+            <h3>Terms & Conditions (summary)</h3>
+            <p class="terms-text">Pixel Prompt provides prompts for AI image generation. Please do not upload or distribute images that you do not own or that contain private personal data. You may use prompts to generate images, but do not claim copyright over images generated from others' prompts without permission. The site may be modified or taken down at any time.</p>
+            <p style="margin-top:.6rem;color:var(--secondary-text-color)">Important: <strong>Do not download or reuse preview images without permission.</strong> Use the prompts to create original images in your chosen model.</p>
+          </div>
+
+          <div class="more-panel" style="margin-top:1rem;">
+            <h3>Learn Prompting</h3>
+            <p>We maintain tutorials and demo prompt sets on our YouTube channel. Click the link below to visit and subscribe — resources and links can be updated from the admin in the future.</p>
+            <p><a id="learn-link" href="https://youtube.example" target="_blank" rel="noopener">Open PixelPrompt YouTube channel</a></p>
+          </div>
+
+          <div class="more-panel" style="margin-top:1rem;">
+            <h3>News</h3>
+            <p id="news-text">Latest site announcements will appear here. (Admin can update this from the database.)</p>
+          </div>
+        </div>
+
+        <!-- right: latest images (top 50 recent) -->
+        <aside>
+          <div class="more-panel">
+            <h3>Top 50 Latest Images</h3>
+            <div id="latest-collections-container">
+              <div id="latest-loading" class="loading-indicator">Loading latest images...</div>
+              <div id="latest-collections" class="collections-list" aria-live="polite"></div>
+              <div id="latest-empty" style="display:none;color:var(--secondary-text-color);margin-top:.6rem;">No images found.</div>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </main>
+
+  <!-- Your firebase config (so the inline script can access window.firebase) -->
+  <script src="js/firebase-config.js"></script>
+
+  <script>
+    (function(){
+      'use strict';
+
+      function qs(sel, ctx=document){ return ctx.querySelector(sel); }
+      function qsa(sel, ctx=document){ return Array.from((ctx||document).querySelectorAll(sel)); }
+
+      const body = document.body;
+      const themeToggle = qs('#theme-toggle');
+      const themeIcon = qs('#theme-icon');
+      const logoFull = qs('#logo-full');
+      const logoIcon = qs('#logo-icon');
+
+      function updateIconsForTheme(theme){
+        const mode = theme === 'dark' ? 'dark' : 'light';
+        if(logoFull) logoFull.src = `assets/${mode}/logo-full.svg`;
+        if(logoIcon) logoIcon.src = `assets/${mode}/logo-icon.svg`;
+        qsa('img.icon, img.icon-small, img.social-icon, .header-logo img').forEach(img => {
+          if(!img) return;
+          if(img.id === 'theme-icon') return;
+          const file = (img.getAttribute('src') || '').split('/').pop();
+          if(file) img.src = `assets/${mode}/${file}`;
+        });
+        if(themeIcon) themeIcon.src = theme === 'dark' ? 'assets/dark/sun.svg' : 'assets/light/moon.svg';
+      }
+
+      // Init theme from localStorage
+      const saved = localStorage.getItem('theme') || 'light';
+      body.classList.remove('theme-light','theme-dark');
+      body.classList.add(`theme-${saved}`);
+      updateIconsForTheme(saved);
+
+      if(themeToggle){
+        themeToggle.addEventListener('click', ()=>{
+          const curr = body.classList.contains('theme-dark') ? 'dark' : 'light';
+          const next = curr === 'dark' ? 'light' : 'dark';
+          body.classList.remove(`theme-${curr}`); body.classList.add(`theme-${next}`);
+          localStorage.setItem('theme', next);
+          updateIconsForTheme(next);
+        });
+      }
+
+      // Elements for images list
+      const container = qs('#latest-collections');
+      const loading = qs('#latest-loading');
+      const empty = qs('#latest-empty');
+
+      function clearList(){
+        if(container) container.innerHTML = '';
+        if(loading) loading.style.display = 'none';
+      }
+
+      function renderImageCards(arr){
+        clearList();
+        if(!arr || !arr.length){
+          if(empty){ empty.style.display = 'block'; empty.textContent = 'No images found.'; }
+          return;
+        }
+        if(empty) empty.style.display = 'none';
+        arr.forEach(item => {
+          // item expected to have id, title, prompt, views, tags, storagePath
+          const card = document.createElement('div');
+          card.className = 'collection-card';
+          const title = document.createElement('h4');
+          title.textContent = item.title || (item.prompt ? item.prompt.slice(0,45) + (item.prompt.length>45 ? '…' : '') : 'Untitled');
+          const meta = document.createElement('p');
+          const tagText = (item.tags && item.tags.length) ? item.tags.slice(0,3).join(', ') : '';
+          meta.textContent = tagText || (`${item.views || 0} views`);
+          const anchor = document.createElement('a');
+          anchor.href = `index.html?id=${encodeURIComponent(item.id || '')}`;
+          anchor.title = item.title || 'Open image';
+          anchor.appendChild(title);
+          anchor.appendChild(meta);
+          card.appendChild(anchor);
+          // clicking anywhere should navigate
+          card.addEventListener('click', function(e){
+            if(anchor.href) window.location = anchor.href;
+          });
+          container.appendChild(card);
+        });
+      }
+
+      // Fetch top 50 images from Firestore 'images' collection ordered by createdAt desc.
+      async function fetchTopImages(){
+        try{
+          if(typeof window.firebase === 'undefined' || !window.firebase.apps || !window.firebase.apps.length){
+            // Firestore not initialized — show empty
+            clearList();
+            if(empty){ empty.style.display = 'block'; empty.textContent = 'Backend not connected.'; }
+            return;
+          }
+          const db = window.firebase.firestore();
+          const snap = await db.collection('images').orderBy('createdAt','desc').limit(50).get();
+          const arr = [];
+          snap.forEach(doc => {
+            const d = doc.data() || {};
+            arr.push({
+              id: doc.id,
+              title: d.title || d.prompt || '',
+              prompt: d.prompt || '',
+              views: d.views || 0,
+              tags: d.tags || [],
+              storagePath: d.storagePath || d.thumbUrl || ''
+            });
+          });
+          renderImageCards(arr);
+        }catch(err){
+          console.error('fetchTopImages error:', err);
+          clearList();
+          if(empty){ empty.style.display = 'block'; empty.textContent = 'Failed to load images.'; }
+        }
+      }
+
+      // Start load
+      fetchTopImages();
+
+      // Optional: fetch small site meta doc for learn/news links (if present)
+      async function fetchSiteMeta(){
+        try{
+          if(typeof window.firebase === 'undefined' || !window.firebase.apps || !window.firebase.apps.length) return;
+          const db = window.firebase.firestore();
+          const doc = await db.collection('siteMeta').doc('more').get();
+          if(!doc.exists) return;
+          const data = doc.data();
+          if(data.learn_link) qs('#learn-link').href = data.learn_link;
+          if(data.news_text) qs('#news-text').textContent = data.news_text;
+        }catch(e){
+          console.warn('fetchSiteMeta error', e);
+        }
+      }
+      fetchSiteMeta();
+
+    })();
+  </script>
+</body>
+</html>

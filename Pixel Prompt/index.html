@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PixelPrompt - AI Image Gallery</title>
+
+  <!-- SEO & Sharing meta (non-visual, safe) -->
+  <meta name="description" content="PixelPrompt — discover, like and save AI-generated images and prompts. Browse categories, copy prompts, and explore creative inspirations.">
+  <link rel="canonical" href="https://pixelsprompt.com/">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#111827">
+
+  <!-- Open Graph / Social preview -->
+  <meta property="og:title" content="PixelPrompt - AI Image Gallery">
+  <meta property="og:description" content="Discover, like and save AI-generated images and prompts. PixelPrompt helps you find inspiration and copy prompts instantly.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pixelsprompt.com/">
+  <meta property="og:image" content="https://pixelsprompt.com/assets/og-image.png">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Firebase compat SDKs (keep these if you're using the compat code) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+<body class="theme-light">
+  <!-- LEFT NAV -->
+  <nav class="nav-left" aria-label="Primary navigation">
+    <a href="index.html" class="nav-item nav-logo" title="PixelPrompt home">
+      <img id="logo-icon" src="assets/light/logo-icon.svg" alt="PixelPrompt" class="logo-icon">
+    </a>
+
+    <a href="index.html" class="nav-item active" data-tooltip="Home" title="Home">
+      <img class="icon home-icon" src="assets/light/home.svg" alt="Home">
+    </a>
+
+    <a href="collections.html" class="nav-item" data-tooltip="Collections" title="Collections">
+      <img class="icon" src="assets/light/collections.svg" alt="Collections">
+    </a>
+
+    <a href="liked.html" class="nav-item" data-tooltip="Liked" title="Liked">
+      <img class="icon" src="assets/light/heart-outline.svg" alt="Liked">
+    </a>
+
+    <a href="more.html" class="nav-item" data-tooltip="More" title="More">
+      <img class="icon" src="assets/light/more.svg" alt="More">
+    </a>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="main-content">
+    <div class="content-container">
+      <!-- HEADER -->
+      <header class="header" role="banner">
+
+        <!-- Full logo for desktop (restored) -->
+        <a href="index.html" class="header-logo" title="PixelPrompt">
+          <img id="logo-full" src="assets/light/logo-full.svg" alt="PixelPrompt" class="logo-full">
+        </a>
+
+        <!-- Small logo for mobile (kept) -->
+        <img class="logo-icon-small-top" src="assets/light/logo-icon.svg" alt="PixelPrompt">
+
+        <div class="search-bar" role="search">
+          <img class="icon-small" src="assets/light/search.svg" alt="" aria-hidden="true">
+          <input type="search" id="search-input" placeholder="Search for prompts, tags, or themes..." aria-label="Search">
+        </div>
+
+        <div class="header-right" role="region" aria-label="Header actions">
+          <button id="theme-toggle" class="header-button theme-toggle-btn" data-tooltip="Toggle Theme" aria-label="Toggle theme">
+            <img id="theme-icon" class="icon-small" src="assets/light/moon.svg" alt="Toggle theme icon">
+          </button>
+
+          <button id="notificationsBtn" class="header-button" data-tooltip="Notifications" aria-label="Notifications">
+            <img class="icon-small bell-icon" src="assets/light/bell.svg" alt="Notifications">
+          </button>
+
+          <!-- LOGIN button required by script.js -->
+          <button id="login-btn" class="header-button login-btn" data-tooltip="Sign in / Account" aria-label="Sign in">
+            Log in
+          </button>
+        </div>
+
+        <!-- Notifications floating panel (hidden by default) -->
+        <div id="notifications-panel" class="notifications-panel" aria-hidden="true">
+          <div class="notifications-header">
+            <strong>Notifications</strong>
+            <button id="close-notifs" aria-label="Close notifications" class="notif-close">&times;</button>
+          </div>
+          <div id="notifications-list" class="notifications-list">
+            <div class="notif-item">No new notifications</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- HERO SLIDER -->
+      <div class="hero-section">
+        <div class="slider-container">
+          <div class="slider" id="hero-slider" aria-roledescription="carousel">
+            <div class="slide">
+              <img src="https://placehold.co/1200x600/1e293b/a8a29e?text=Hero+Image+1" alt="Hero 1">
+              <div class="slide-overlay">
+                <h2 class="slide-title">Discover Your Next Inspiration</h2>
+              </div>
+            </div>
+
+            <div class="slide">
+              <img src="https://placehold.co/1200x600/4c0519/a8a29e?text=Hero+Image+2" alt="Hero 2">
+              <div class="slide-overlay">
+                <h2 class="slide-title">Unleash Your Creativity</h2>
+              </div>
+            </div>
+
+            <div class="slide">
+              <img src="https://placehold.co/1200x600/064e3b/a8a29e?text=Hero+Image+3" alt="Hero 3">
+              <div class="slide-overlay">
+                <h2 class="slide-title">Explore Stunning Worlds</h2>
+              </div>
+            </div>
+          </div>
+
+          <button class="slider-arrow slider-prev" aria-label="Previous slide">&lt;</button>
+          <button class="slider-arrow slider-next" aria-label="Next slide">&gt;</button>
+          <div class="slider-dots" aria-hidden="false"></div>
+        </div>
+      </div>
+
+      <!-- FILTER CHIPS -->
+      <div class="filter-section" aria-label="Filters">
+        <div class="filter-chips-container" id="filter-chips" role="toolbar" aria-label="Gallery filters">
+          <div class="filter-chip active" data-filter="All">All</div>
+          <div class="filter-chip" data-filter="Trending">Trending</div>
+          <div class="filter-chip" data-filter="People">People</div>
+          <div class="filter-chip" data-filter="Men">Men</div>
+          <div class="filter-chip" data-filter="Women">Women</div>
+          <div class="filter-chip" data-filter="Couples">Couples</div>
+          <div class="filter-chip" data-filter="Design">Design</div>
+          <div class="filter-chip" data-filter="Background">Background</div>
+          <div class="filter-chip" data-filter="Funny">Funny</div>
+          <div class="filter-chip" data-filter="Kids">Kids</div>
+          <div class="filter-chip" data-filter="Icons">Icons</div>
+          <div id="more-tags" class="filter-chip">More ▾</div>
+          <div id="more-tags-dropdown" class="more-dropdown"></div>
+        </div>
+      </div>
+
+      <!-- GALLERY -->
+      <section class="gallery-section" aria-label="Image gallery">
+        <h2 class="section-title">Latest Creations</h2>
+        <div class="gallery-grid" id="image-gallery" aria-live="polite"></div>
+        <div id="loading-indicator" class="loading-indicator" role="status" aria-hidden="true">Loading more...</div>
+      </section>
+    </div>
+  </main>
+
+  <!-- IMAGE MODAL (single clean structure) -->
+  <div id="image-modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close-btn" aria-label="Close">&times;</button>
+
+      <div class="modal-inner-container">
+        <!-- Image column -->
+        <div class="modal-image-container">
+          <img id="modal-image" src="" alt="AI generated image">
+        </div>
+
+        <!-- Details column (contains a single scrollable area) -->
+        <div class="modal-details-container">
+          <div class="modal-body-scroll">
+            <h3 id="modal-title" class="modal-title"></h3>
+
+            <div class="modal-stats">
+              <span id="modal-views" class="stat">0</span>
+              <span class="stat">Views</span>
+            </div>
+
+            <div class="modal-actions" aria-label="Image actions">
+              <button id="like-btn" class="action-btn icon-only" aria-label="Like">
+                <img id="like-icon" src="assets/light/heart-outline.svg" alt="Like">
+                <span id="like-count">0</span>
+              </button>
+
+              <button id="save-btn" class="action-btn icon-only" aria-label="Save">
+                <img id="save-icon" src="assets/light/save-outline.svg" alt="Save">
+                <span>Save</span>
+              </button>
+            </div>
+
+            <!-- Prompt block -->
+            <div class="floating-box modal-prompt" id="modal-prompt" tabindex="0" role="article" aria-label="Image prompt"></div>
+
+            <!-- Copy button below the prompt -->
+            <div class="prompt-copy-wrap">
+              <button class="prompt-copy-btn small" id="copy-prompt-btn" aria-label="Copy prompt">
+                <img class="icon-small" src="assets/light/copy.svg" alt="" aria-hidden="true" />
+                <span>Copy Prompt</span>
+              </button>
+            </div>
+
+            <!-- tags & suggestions -->
+            <div class="modal-tags" id="modal-tags"></div>
+
+            <div class="modal-suggestions floating-box" aria-label="Prompt suggestions">
+              <h4>Prompt Suggestions:</h4>
+              <ul id="modal-suggestions-list"></ul>
+            </div>
+
+            <!-- comments -->
+            <div class="modal-comments">
+              <h4>Comments <span id="comments-count">(0)</span></h4>
+              <ul id="modal-comments-list"></ul>
+
+              <form id="comment-form" class="comment-form">
+                <textarea id="comment-input" placeholder="Write a comment..." rows="3" aria-label="Write a comment"></textarea>
+                <button type="submit">Post</button>
+              </form>
+
+              <div id="login-required-message" class="login-required-message hidden" aria-live="polite">
+                Please log in to like or post comments.
+              </div>
+            </div>
+
+            <!-- Credits (visually separated near bottom) -->
+            <p class="modal-credits">Credits: <span id="modal-credits">Generated by PixelPrompt</span></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGIN MODAL -->
+  <div id="login-modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true">
+    <div class="modal-content-small">
+      <button class="modal-close" id="login-modal-close-btn" aria-label="Close">&times;</button>
+      <h3 class="modal-title">Login to continue</h3>
+      <p>You need to be signed in to perform this action.</p>
+      <button id="google-login-btn" class="google-login-btn" aria-label="Sign in with Google">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+        Sign in with Google
+      </button>
+    </div>
+  </div>
+
+  <!-- Your firebase config (only once) -->
+  <script src="js/firebase-config.js"></script>
+
+  <!-- Main app logic (only once) -->
+  <script src="js/script.js"></script>
+</body>
+</html>

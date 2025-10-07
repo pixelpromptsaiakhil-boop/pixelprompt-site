@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Collections - PixelPrompt</title>
+  <meta name="description" content="Your saved image collections on PixelPrompt. Save and manage your favorite AI-generated images effortlessly.">
+  <link rel="canonical" href="https://pixelsprompt.com/collections.html">
+
+  <!-- Open Graph for SEO & sharing -->
+  <meta property="og:title" content="Collections - PixelPrompt">
+  <meta property="og:description" content="Your saved image collections on PixelPrompt.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pixelsprompt.com/collections.html">
+  <meta property="og:image" content="https://pixelsprompt.com/assets/preview/collections-preview.png">
+  <meta property="og:site_name" content="PixelPrompt">
+
+  <!-- Optional: prevent admin pages from being indexed -->
+  <meta name="robots" content="index,follow">
+
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- Firebase compat SDKs (for shared login + Firestore access) -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+</head>
+
+<body class="theme-light">
+  <!-- LEFT NAV -->
+  <nav class="nav-left">
+    <a href="index.html" class="nav-item nav-logo">
+      <img id="logo-icon" src="assets/light/logo-icon.svg" alt="PixelPrompt" class="logo-icon">
+    </a>
+
+    <a href="index.html" class="nav-item" data-tooltip="Home">
+      <img class="icon" src="assets/light/home.svg" alt="Home">
+    </a>
+
+    <!-- Collections is active on this page -->
+    <a href="collections.html" class="nav-item active" data-tooltip="Collections">
+      <img class="icon" src="assets/light/collections.svg" alt="Collections">
+    </a>
+
+    <a href="liked.html" class="nav-item" data-tooltip="Liked">
+      <img class="icon" src="assets/light/heart-outline.svg" alt="Liked">
+    </a>
+
+    <a href="more.html" class="nav-item" data-tooltip="More">
+      <img class="icon" src="assets/light/more.svg" alt="More">
+    </a>
+  </nav>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="content-container">
+      <!-- HEADER -->
+      <header class="header">
+        <a href="index.html" class="header-logo">
+          <img id="logo-full" src="assets/light/logo-full.svg" alt="PixelPrompt" class="logo-full">
+        </a>
+
+        <div class="search-bar" role="search">
+          <img class="icon-small" src="assets/light/search.svg" alt="" aria-hidden="true">
+          <input type="search" id="search-input" placeholder="Search for prompts, tags, or themes..." aria-label="Search">
+        </div>
+
+        <div class="header-right" role="region" aria-label="Header actions">
+          <button id="theme-toggle" class="header-button theme-toggle-btn" data-tooltip="Toggle Theme" aria-label="Toggle theme">
+            <img id="theme-icon" class="icon-small" src="assets/light/moon.svg" alt="Toggle theme icon">
+          </button>
+
+          <button id="notificationsBtn" class="header-button" data-tooltip="Notifications" aria-label="Notifications">
+            <img class="icon-small bell-icon" src="assets/light/bell.svg" alt="Notifications">
+          </button>
+
+          <button id="login-btn" class="header-button login-btn" data-tooltip="Sign in / Account" aria-label="Sign in">
+            Log in
+          </button>
+        </div>
+      </header>
+
+      <!-- PAGE SECTION -->
+      <section class="page-section">
+        <h2 class="section-title">My Collections</h2>
+        <p>This is where your saved collections of images will be displayed.</p>
+        <div id="collections-gallery" class="gallery-grid" aria-live="polite"></div>
+      </section>
+    </div>
+  </main>
+
+  <!-- LOGIN MODAL -->
+  <div id="login-modal" class="modal" aria-hidden="true" role="dialog" aria-modal="true" style="display:none;">
+    <div class="modal-content-small">
+      <button class="modal-close" id="login-modal-close-btn" aria-label="Close">&times;</button>
+      <h3 class="modal-title">Login to continue</h3>
+      <p>You need to be signed in to perform this action.</p>
+      <button id="google-login-btn" class="google-login-btn" aria-label="Sign in with Google">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+        Sign in with Google
+      </button>
+    </div>
+  </div>
+
+  <!-- Firebase config -->
+  <script src="js/firebase-config.js"></script>
+
+  <!-- Shared main logic -->
+  <script src="js/script.js"></script>
+</body>
+</html>

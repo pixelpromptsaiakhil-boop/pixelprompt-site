@@ -1,0 +1,481 @@
+/* styles.css - PixelPrompt (final merged)
+   - Full UI styles (light + dark)
+   - Modal, header, hero, gallery, responsive
+   - Fixes: notifications fixed, mobile small logo, prompt font, copy button, suggestions, credits link
+*/
+
+/* -------------------------
+   Theme variables
+   ------------------------- */
+:root{
+  --primary-color:#3b82f6;
+  --secondary-color:#f59e0b;
+  --background-color:#f3f4f6;
+  --card-background:#ffffff;
+  --text-color:#1f2937;
+  --secondary-text-color:#6b7280;
+  --border-color:#e5e7eb;
+  --link-color:#4b5563;
+  --link-hover-color:#374151;
+  --shadow:0 4px 6px -1px rgba(0,0,0,0.1),0 2px 4px -1px rgba(0,0,0,0.06);
+  --left-w:80px;
+  --header-h:72px;
+
+  /* prompt font inherits site font (prevents serif fallback) */
+  --prompt-font: inherit;
+}
+
+.theme-dark{
+  --primary-color:#60a5fa;
+  --secondary-color:#fcd34d;
+  --background-color:#111827;
+  --card-background:#1f2937;
+  --text-color:#f9fafb;
+  --secondary-text-color:#d1d5db;
+  --border-color:#374151;
+  --link-color:#e5e7eb;
+  --link-hover-color:#f9fafb;
+  --shadow:0 8px 28px rgba(0,0,0,0.6);
+}
+
+/* -------------------------
+   Reset + base
+   ------------------------- */
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  margin:0;padding:0;
+  background-color:var(--background-color);
+  color:var(--text-color);
+  display:flex;
+  transition:background-color .25s,color .25s;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+/* -------------------------
+   Left nav
+   ------------------------- */
+.nav-left{
+  width:var(--left-w);
+  height:100vh;
+  background-color:var(--card-background);
+  display:flex;flex-direction:column;align-items:center;
+  padding:1rem 0;border-right:1px solid var(--border-color);
+  box-shadow:var(--shadow);position:sticky;top:0;z-index:40;
+}
+.nav-item{width:100%;height:60px;display:flex;justify-content:center;align-items:center;text-decoration:none;color:var(--secondary-text-color);border-radius:8px;margin:.25rem 0;transition:background-color .18s,color .18s,transform .12s;}
+.nav-item:hover,.nav-item.active{background-color:var(--border-color);color:var(--primary-color);transform:scale(1.03);}
+.nav-item.nav-logo,.nav-item.nav-toggle{margin-bottom:1rem;}
+.nav-item .icon{width:24px;height:24px;display:block;filter:none;opacity:.95;}
+.nav-item:not(.active) .icon{opacity:.9;}
+.nav-item.active .icon,.nav-item:hover .icon{opacity:1;}
+.nav-item.nav-logo .logo-icon{width:48px;height:48px;display:block;}
+
+/* -------------------------
+   Main container & content
+   ------------------------- */
+/* NOTE: changed max-width to 1080px so content aligns with 3-column masonry grid */
+.main-content{flex-grow:1;padding:1.5rem;overflow-y:auto;min-height:100vh;background:transparent;}
+/* content container holds the page content and centers items */
+.content-container{
+  max-width:1080px; /* unified content width (changed from 1200 => 1080 to match 3 cols) */
+  margin:0 auto;
+  width:100%;
+  padding:0 12px; /* small horizontal padding so content doesn't touch viewport */
+}
+
+/* -------------------------
+   Header
+   ------------------------- */
+.header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;height:var(--header-h);}
+
+/* show full logo only on desktop, hide on mobile */
+.header-logo .logo-full{height:40px;display:none;}
+.logo-icon-small-top{width:36px;height:36px;display:none;margin-right:12px;} /* mobile small icon (inserted in HTML) */
+
+/* make small logo hidden on desktop and full logo visible on desktop */
+@media (min-width:769px){
+  .header-logo .logo-full{display:block;}
+  .logo-icon-small-top{display:none;}
+}
+
+/* header inner container should respect content-container width — ensure header children stay within the container */
+.header-inner{
+  width:100%;
+  max-width:1080px; /* match content width */
+  margin:0 auto;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;
+  padding:0 12px; /* match content container padding */
+}
+
+/* align logo to left of content block and actions to right */
+.header-inner .header-logo{margin-right:auto;display:flex;align-items:center;gap:12px;}
+.header-inner .header-right{margin-left:auto;display:flex;align-items:center;gap:12px;}
+
+/* If your HTML has .header directly inside .content-container this .header-inner wrapper isn't required.
+   This rule simply ensures header elements align to the same centered width as the masonry. */
+
+/* Search bar and header controls */
+.search-bar{display:flex;align-items:center;flex-grow:1;margin:0 2rem;max-width:600px;background-color:var(--card-background);border-radius:9999px;border:1px solid var(--border-color);padding:.5rem 1rem;box-shadow:0 6px 20px rgba(15,15,30,0.04);}
+.search-bar img.icon-small{margin-right:8px;width:20px;height:20px;}
+.search-bar input{width:100%;border:none;background:transparent;outline:none;color:var(--text-color);font-size:1rem;}
+.search-bar input::placeholder{color:var(--secondary-text-color);opacity:.9;}
+
+.header-right{display:flex;align-items:center;gap:1rem;}
+.header-button{background:none;border:0;cursor:pointer;padding:6px;transition:transform .12s ease;display:inline-flex;align-items:center;justify-content:center;border-radius:8px;}
+.header-button:hover{transform:scale(1.05);}
+.icon-small{width:24px;height:24px;display:block;}
+.login-btn{border-radius:8px;padding:8px 12px;background:var(--card-background);border:1px solid var(--border-color);color:var(--text-color);font-weight:600;cursor:pointer;}
+.login-btn:hover{transform:scale(1.03);}
+
+/* -------------------------
+   Hero / Slider
+   ------------------------- */
+/* Fixed visual hero height with graceful max height and fallback background.
+   We changed image behavior: show entire image (contain) and let sides show container background. */
+.hero-section{margin-bottom:1.5rem;}
+.slider-container{
+  position:relative;
+  border-radius:1rem;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  cursor:grab;
+  background:linear-gradient(180deg,rgba(255,255,255,0.6),rgba(255,255,255,0.3)); /* light fallback */
+  height:420px;         /* fixed visual height for hero */
+  max-height:52vh;      /* responsive cap on very small screens */
+  width:100%;
+  max-width:1080px; /* ensure hero width matches gallery/content width (changed) */
+  margin:0 auto;     /* center hero */
+}
+.theme-dark .slider-container{background:linear-gradient(180deg,rgba(20,20,24,0.85),rgba(18,18,22,0.6));}
+.slider{
+  display:flex;
+  transition:transform .5s ease-in-out;
+  will-change:transform;
+  height:100%;
+  align-items:center;    /* center contained images vertically */
+  justify-content:flex-start; /* we keep horizontal translate behavior */
+}
+.slide{
+  min-width:100%;
+  position:relative;
+  user-select:none;
+  display:flex;         /* use flex so contained img can be centered */
+  align-items:center;
+  justify-content:center;
+  height:100%;
+  background:transparent;
+}
+/* show whole image inside the hero without cropping */
+.slide img{
+  max-width:100%;
+  max-height:100%;
+  width:auto;
+  height:auto;
+  display:block;
+  object-fit:contain;   /* important: contain (no crop) */
+  background:transparent;
+  /* add slight smoothing / shadowless display */
+  border-radius:6px;
+}
+
+/* overlay stays at bottom and readable even when images are contained
+   ensure text color is white here so it is readable in both themes */
+.slide-overlay{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(to top,rgba(0,0,0,0.6),rgba(0,0,0,0));color:#fff;padding:2rem;}
+.slide-title{font-size:2rem;font-weight:700;margin-bottom:.5rem;color: #fff;}
+/* kept slide-prompt style but hero won't inject the prompt */
+.slide-prompt{font-size:1rem;color:#e5e7eb;}
+
+/* slider controls */
+.slider-arrow{position:absolute;top:50%;transform:translateY(-50%);background:rgba(0,0,0,0.45);color:#fff;border:none;font-size:1.6rem;cursor:pointer;padding:.5rem;border-radius:50%;z-index:10;transition:background-color .2s;}
+.slider-prev{left:12px;} .slider-next{right:12px;}
+.slider-arrow:hover{background:rgba(0,0,0,0.65);}
+.slider-dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);display:flex;gap:8px;}
+.dot{width:10px;height:10px;background-color:rgba(255,255,255,0.5);border-radius:50%;cursor:pointer;transition:background-color .2s;}
+.dot.active{background-color:var(--primary-color);}
+
+/* -------------------------
+   Filters & gallery
+   ------------------------- */
+.filter-section{margin-bottom:1.5rem;position:relative;}
+.filter-chips-container{display:flex;flex-wrap:wrap;gap:.75rem;align-items:center;}
+.filter-chip{padding:.5rem 1rem;border-radius:9999px;background-color:var(--card-background);color:var(--secondary-text-color);cursor:pointer;transition:background-color .15s,color .15s;border:1px solid var(--border-color);font-weight:600;}
+.filter-chip:hover{background-color:var(--border-color);color:var(--text-color);}
+.filter-chip.active{background-color:var(--primary-color);color:#fff;border-color:var(--primary-color);}
+
+/* gallery: use column-based CSS masonry for variable aspect ratios (simple, no JS) */
+/* Keep masonry as 3 columns on wide screens; center and limit width to 1080px so header/hero align */
+.gallery-section{margin-bottom:1.5rem;}
+.gallery-grid{
+  column-gap:1.5rem;
+  /* prefer 3 columns on wide screens (stable 3-column layout accepted) */
+  column-count:3;
+  /* tuned column width to fit three columns inside 1080px comfortably */
+  column-width:320px;
+  width:100%;
+  /* center the grid and limit width so columns align centrally */
+  max-width:1080px;
+  margin:0 auto;
+  /* small padding so cards don't touch edge */
+  padding:0 6px;
+}
+.card{
+  background:var(--card-background);
+  border-radius:12px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+  cursor:pointer;
+  display:inline-block;
+  width:100%;
+  margin:0 0 1.5rem 0;
+  break-inside:avoid;
+}
+.card img{
+  display:block;
+  width:100%;
+  height:auto;
+  object-fit:cover;
+  border-radius:10px;
+}
+
+/* responsive columns */
+@media (max-width:1100px){
+  .gallery-grid{column-count:3; column-width:300px;}
+}
+@media (max-width:800px){
+  .gallery-grid{column-count:2; column-width:320px;}
+}
+@media (max-width:480px){
+  .gallery-grid{column-count:1; column-width:100%;}
+}
+
+/* -------------------------
+   Modal & details panel
+   ------------------------- */
+/* overlay */
+.modal{display:none;position:fixed;z-index:1000;left:0;top:0;right:0;bottom:0;background-color:rgba(0,0,0,0.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:center;justify-content:center;overflow:hidden;}
+.modal.active{display:flex;}
+
+/* content */
+.modal-content{background-color:var(--card-background);margin:2% auto;padding:1.25rem;border-radius:1rem;width:92%;max-width:1080px;position:relative;box-shadow:var(--shadow);transition:background-color .3s;max-height:90vh;overflow:visible;}
+.modal-close{position:absolute;top:1rem;right:1.5rem;color:var(--secondary-text-color);font-size:2.2rem;font-weight:bold;cursor:pointer;background:none;border:0;line-height:1;}
+
+/* inner columns */
+.modal-inner-container{display:flex;gap:1.5rem;align-items:stretch;height:calc(90vh - 48px);}
+.modal-image-container{flex:1.6;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:12px;background:transparent;}
+.modal-image-container img{max-width:100%;max-height:100%;border-radius:12px;object-fit:contain;display:block;}
+.modal-details-container{flex:0.9;display:flex;flex-direction:column;max-height:100%;overflow:hidden;padding-right:6px;background:transparent;}
+
+/* scrollable area inside details column */
+.modal-body-scroll{overflow:auto;padding-right:6px;max-height:100%;display:flex;flex-direction:column;gap:8px;}
+
+/* title / stats / actions */
+.modal-title{font-size:1.5rem;font-weight:600;margin-bottom:.3rem;color:var(--text-color);}
+.modal-stats{display:flex;gap:8px;color:var(--secondary-text-color);font-size:.9rem;margin-bottom:0.2rem;}
+.modal-actions{display:flex;gap:.75rem;margin:0.4rem 0 0.8rem 0;align-items:center;}
+
+/* action buttons (like/save) - clearly visible counts */
+.modal-actions .action-btn{
+  width:52px;height:52px;padding:0;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;
+  background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.06));
+  border:1px solid rgba(255,255,255,0.06);
+  cursor:pointer;transition:transform .12s ease,background .12s ease,box-shadow .12s ease;
+  box-shadow:0 6px 18px rgba(10,10,30,0.06);color:var(--text-color);position:relative;
+}
+.modal-actions .action-btn img{width:20px;height:20px;display:block;filter:none;opacity:.98;}
+/* ensure numeric count is readable: use text color and slightly bolder */
+.modal-actions .action-btn span{display:inline-block;margin-left:8px;font-size:0.95rem;color:var(--text-color);font-weight:600;}
+
+/* hover states */
+.modal-actions .action-btn:hover,.modal-actions .action-btn:focus{
+  transform:translateY(-2px);
+  background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(0,0,0,0.08));
+  box-shadow:0 10px 30px rgba(10,10,30,0.12);
+}
+
+/* icon-only button helper */
+.modal-actions .action-btn.icon-only span{display:none;}
+
+/* -------------------------
+   Prompt floating card
+   - larger, higher contrast, uses site sans font
+   ------------------------- */
+.floating-box.modal-prompt{
+  background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.04));
+  border:1px solid rgba(255,255,255,0.05);
+  color:var(--text-color);
+  padding:16px;
+  border-radius:12px;
+  font-size:1rem;
+  line-height:1.5;
+  max-height:360px;
+  min-height:100px;         /* a bit bigger */
+  overflow:auto;
+  box-shadow:0 8px 30px rgba(10,10,30,0.08);
+  margin-bottom:8px;
+  font-family:var(--prompt-font);   /* use site font (not serif) */
+}
+
+/* copy button wrapper - align right (desktop & mobile) */
+.prompt-copy-wrap{margin-top:10px;display:flex;justify-content:flex-end;}
+.prompt-copy-btn{
+  display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;
+  background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(0,0,0,0.06));
+  border:1px solid rgba(255,255,255,0.04);color:var(--text-color);font-weight:600;font-size:0.95rem;cursor:pointer;
+  box-shadow:0 6px 20px rgba(10,10,30,0.06);
+}
+.prompt-copy-btn img{width:16px;height:16px;display:block;}
+.prompt-copy-btn.small{padding:6px 8px;font-size:0.9rem;border-radius:8px;}
+.prompt-copy-btn:active{transform:scale(.98);}
+
+/* tags */
+.modal-tags{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem;}
+.modal-tag{background:var(--border-color);color:var(--secondary-text-color);padding:.25rem .75rem;border-radius:9999px;font-size:.875rem;}
+
+/* suggestions: use small font, show side-by-side where possible */
+.modal-suggestions.floating-box{
+  background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.04);
+  margin-bottom:12px;padding:10px;border-radius:10px;
+}
+.modal-suggestions h4{margin:0 0 8px 0;font-size:0.95rem;}
+.modal-suggestions-list{list-style:none;padding:0;margin:0;display:flex;flex-wrap:wrap;gap:8px;}
+.modal-suggestions-list li{background:var(--border-color);padding:.4rem .6rem;border-radius:.5rem;color:var(--text-color);font-size:.9rem;}
+
+/* comments */
+.modal-comments{margin-top:1rem;}
+.modal-comments-list li{color:var(--secondary-text-color);}
+.comment-form textarea{width:100%;background:var(--card-background);border:1px solid var(--border-color);border-radius:.5rem;padding:.75rem;color:var(--text-color);outline:none;resize:vertical;}
+.comment-form button{background:var(--primary-color);color:#fff;border:none;padding:.75rem 1rem;border-radius:.5rem;cursor:pointer;font-weight:600;}
+.comment-form button:hover{background:#2563eb;}
+
+/* credits (pinned visually near bottom of details column)
+   NOTE: make this a link in HTML like:
+   <p class="modal-credits">Credits: <a id="modal-credits" href="https://..." target="_blank" rel="noopener">Generated by PixelPrompt</a></p>
+*/
+.modal-credits{color:var(--secondary-text-color);font-size:.95rem;margin-top:12px;padding-top:12px;border-top:1px dashed rgba(0,0,0,0.06);}
+.modal-credits a{color:var(--link-color);text-decoration:none;font-weight:600;}
+.modal-credits a:hover{color:var(--link-hover-color);text-decoration:underline;}
+
+/* loader */
+.loading-indicator{text-align:center;padding:1rem;color:var(--secondary-text-color);}
+
+/* notifications panel: FIXED so it stays within viewport and over header */
+.notifications-panel{
+  position:fixed;
+  right:24px;
+  top:calc(var(--header-h) + 12px);
+  width:320px;
+  max-width:calc(100vw - 48px);
+  background:var(--card-background);
+  border:1px solid var(--border-color);
+  border-radius:12px;
+  box-shadow:0 14px 40px rgba(0,0,0,0.45);
+  padding:10px;
+  z-index:1400;
+  display:none;
+}
+.notifications-panel.active{display:block;}
+.notifications-header{display:flex;justify-content:space-between;align-items:center;padding:6px 8px;border-bottom:1px solid var(--border-color);margin-bottom:8px;}
+.notif-close{background:none;border:0;font-size:18px;cursor:pointer;color:var(--secondary-text-color);}
+.notifications-list{max-height:300px;overflow:auto;padding:6px;}
+.notif-item{padding:8px;border-radius:8px;background:transparent;color:var(--text-color);margin-bottom:6px;border:1px solid transparent;}
+.notif-item:hover{background:var(--border-color);}
+
+/* more dropdown */
+.more-dropdown{display:none;position:absolute;background:var(--card-background);border:1px solid var(--border-color);box-shadow:var(--shadow);padding:8px;border-radius:8px;margin-top:6px;z-index:200;right:0;min-width:160px;}
+.more-dropdown.active{display:block;}
+.more-dropdown .filter-chip{display:block;width:100%;margin:6px 0;padding:8px 10px;border-radius:8px;font-weight:600;text-align:left;}
+
+/* utilities */
+.hidden{display:none!important;}
+
+/* -------------------------
+   Responsive (mobile)
+   ------------------------- */
+@media (max-width:768px){
+  body{flex-direction:column;}
+
+  /* bottom nav */
+  .nav-left{flex-direction:row;width:100%;height:auto;padding:0;bottom:0;top:auto;position:fixed;border-right:none;border-top:1px solid var(--border-color);background:var(--card-background);justify-content:space-around;z-index:1000;}
+  .nav-item{margin:0;height:60px;flex:1;}
+
+  /* hide the bottom nav logo on mobile (we show a single small header logo instead) */
+  .nav-item.nav-logo{display:none;}
+
+  .main-content{padding:1rem;padding-bottom:70px;}
+  /* Header layout - keep desktop unchanged but for mobile create a 2-row header
+     Row 1: small logo (left) + header-right (right)
+     Row 2: search bar full width
+     We accomplish this using flex-wrap and order without changing HTML. */
+  .header{
+    flex-direction:row;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:.5rem;
+    padding-top:6px;
+    padding-bottom:6px;
+    height:auto; /* allow header height to grow */
+    position:relative; /* ensure header sits above hero if needed */
+    z-index:50;
+  }
+
+  /* show the small header icon and keep it in the first row */
+  .logo-icon-small-top{display:inline-block;order:0;width:36px;height:36px;margin-left:8px;}
+
+  /* make search bar occupy full width as second row */
+  .search-bar{
+    order:1;
+    width:calc(100% - 32px);
+    max-width:none;
+    margin:8px auto 0 auto;
+    padding:.5rem 12px;
+  }
+
+  /* place controls (theme/notifications/login) on the same top row as logo */
+  .header-right{
+    order:0;
+    margin-left:auto;
+    display:flex;
+    align-items:center;
+    gap:.6rem;
+    padding-right:8px;
+  }
+
+  /* ensure header-right buttons keep their natural size on mobile */
+  .header-button{padding:6px;}
+
+  /* hero overlay hidden on mobile */
+  .hero-section .slide-overlay{display:none;}
+
+  /* modal mobile: stack */
+  .modal-content{width:100%;max-width:100%;height:100vh;margin:0;border-radius:0;padding:0;}
+  .modal-inner-container{flex-direction:column;gap:0;height:100%;}
+  .modal-image-container{flex:0 0 auto;width:100%;max-height:52vh;overflow:hidden;border-bottom:1px solid var(--border-color);padding:1rem;background:var(--card-background);}
+  .modal-image-container img{width:100%;height:100%;object-fit:cover;border-radius:10px;}
+  .modal-details-container{flex:1;padding:1rem;}
+  .modal-body-scroll{max-height:calc(48vh - 40px);overflow:auto;}
+
+  /* copy button align right on mobile */
+  .prompt-copy-wrap{display:flex;justify-content:flex-end;margin-top:6px;}
+  .prompt-copy-btn{font-size:0.95rem;padding:6px 10px;}
+
+  /* notifications full width on mobile */
+  .notifications-panel{right:8px;left:8px;top:calc(var(--header-h) + 8px);width:auto;}
+}
+
+/* small visual tweaks for very narrow screens */
+@media (max-width:420px){
+  .modal-title{font-size:1.25rem;}
+  .prompt-copy-btn{padding:6px 8px;font-size:0.9rem;}
+}
+
+/* ensure inner scrollbars look consistent: allow scrollbar inside modal-body-scroll only */
+.modal-body-scroll::-webkit-scrollbar{width:10px;}
+.modal-body-scroll::-webkit-scrollbar-thumb{background:rgba(0,0,0,0.12);border-radius:10px;border:2px solid transparent;}
+.modal-body-scroll{padding-right:12px;} /* ensures scrollbar does not overlap content */
+
+/* end of file */
