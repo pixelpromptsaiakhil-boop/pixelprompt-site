@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<!-- This is the 'about.html' file. This is a static page
+     to describe the website's mission. -->
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <!-- Basic setup -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Title and description for SEO -->
+    <title>Pixelsprompt - About Us</title>
+    <meta name="description" content="Learn more about the mission and community at Pixelsprompt.">
+
+    <!-- Favicon -->
+    <link rel="icon" href="assets/favicon.ico">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Firebase -->
+    <script type="module" src="js/firebase-config.js"></script>
+
+    <!-- Main App JS -->
+    <script type="module" src="js/app.js" defer></script>
+</head>
+
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white font-sans transition-colors duration-300">
+
+    <!-- =================================== -->
+    <!-- HEADER / NAVIGATION BAR             -->
+    <!-- =================================== -->
+    <header id="main-header" class="sticky top-0 z-50 w-full glassmorphic-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- UPDATED: Increased header height from h-16 to h-20 -->
+            <div class="flex justify-between items-center h-20">
+
+                <!-- Left Side: Logo (Same) -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="index.html" aria-label="Go to Homepage">
+                        <div class="md:hidden">
+                            <!-- UPDATED: Logo size to h-[55px] -->
+                            <img class="h-[55px] w-auto dark:hidden" src="assets/light/logo-icon.svg"
+                                alt="Pixelsprompt Logo">
+                            <img class="h-[55px] w-auto hidden dark:block" src="assets/dark/logo-icon.svg"
+                                alt="Pixelsprompt Logo">
+                        </div>
+                        <div class="hidden md:block">
+                            <!-- UPDATED: Logo size to h-[55px] -->
+                            <img class="h-[55px] w-auto dark:hidden" src="assets/light/logo-full.svg"
+                                alt="Pixelsprompt Logo">
+                            <img class="h-[55px] w-auto hidden dark:block" src="assets/dark/logo-full.svg"
+                                alt="Pixelsprompt Logo">
+                        </div>
+                    </a>
+                </div>
+
+                <!-- Center: Desktop Navigation Links -->
+                <!-- None of the main links are active, as this page is
+                     accessed from the "More" dropdown. -->
+                <!-- UPDATED: Nav spacing md:space-x-4 to md:space-x-6 -->
+                <nav class="hidden md:flex md:items-center md:space-x-6">
+                    <a href="index.html"
+                        class="text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Gallery</a>
+                    <a href="videos.html"
+                        class="text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Videos</a>
+                    <a href="news.html"
+                        class="text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">News</a>
+                    <!-- NEW: Added Share link -->
+                    <a href="share.html"
+                        class="text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Share</a>
+
+                    <!-- "More" Dropdown Menu (Same) -->
+                    <div class="relative" id="more-menu-container">
+                        <!-- UPDATED: Font size from text-sm to text-base -->
+                        <button id="more-menu-button"
+                            class="flex items-center text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+                            <span>More</span>
+                            <svg class="ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        <div id="more-menu-panel" class="hidden absolute z-10 -right-4 mt-3 px-2 w-48 max-w-xs
+                             bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
+                             transform-gpu opacity-0 scale-95">
+                            <div class="py-1">
+                                <a href="profile.html"
+                                    class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
+                                <!-- REMOVED: Share link from dropdown -->
+                                <a href="tools.html"
+                                    class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Tools</a>
+                                <a href="about.html"
+                                    class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">About</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- Right Side: Toggle, Auth, Mobile Menu (Same) -->
+                <div class="flex items-center space-x-3">
+                    <button id="theme-toggle-button" aria-label="Toggle light and dark mode"
+                        class="relative w-14 h-7 rounded-full transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <div id="theme-toggle-track" class="w-full h-full rounded-full"></div>
+                        <div id="theme-toggle-thumb"
+                            class="absolute top-1 left-1 w-5 h-5 rounded-full bg-yellow-400 dark:bg-gray-300 transition-transform duration-300 ease-in-out">
+                            <div class="absolute w-1 h-1 bg-gray-400 rounded-full top-1 left-1 hidden dark:block"></div>
+                            <div class="absolute w-1 h-1 bg-gray-400 rounded-full top-2 right-1 hidden dark:block">
+                            </div>
+                            <div class="absolute w-1.5 h-1.5 bg-gray-400 rounded-full top-3 left-2 hidden dark:block">
+                            </div>
+                        </div>
+                        <div class="absolute top-2 left-6 w-4 h-2 bg-white rounded-full dark:hidden"></div>
+                        <div class="absolute top-3 left-4 w-5 h-2 bg-white rounded-full dark:hidden"></div>
+                        <div class="absolute top-1 left-8 w-1 h-1 bg-white rounded-full hidden dark:block"></div>
+                        <div class="absolute top-4 left-10 w-0.5 h-0.5 bg-white rounded-full hidden dark:block"></div>
+                        <div class="absolute top-2 left-11 w-1 h-1 bg-white rounded-full hidden dark:block"></div>
+                    </button>
+
+                    <div id="auth-container" class="relative">
+                        <button id="google-signin-btn"
+                            class="hidden bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-lg">
+                            Sign In
+                        </button>
+                        <!-- UPDATED: Changed space-x-3 to space-x-4 to fix icon overlap -->
+                        <div id="user-menu" class="hidden items-center space-x-4">
+                            <!-- Notification Bell -->
+                            <div class="relative" id="notification-container">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                </svg>
+                                <span id="notification-dot"
+                                    class="hidden absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white dark:border-gray-900"></span>
+                                </button>
+                                <button id="user-avatar-btn"
+                                    class="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                    <span class="sr-only">Open user menu</span>
+                                    <img id="user-avatar-img" class="h-8 w-8 rounded-full"
+                                        src="https://placehold.co/32x32/E0E0E0/B0B0B0?text=?" alt="User Avatar">
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center md:hidden">
+                            <button id="mobile-menu-open-btn"
+                                class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">
+                                <span class="sr-only">Open main menu</span>
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+    </header>
+
+    <!-- =================================== -->
+    <!-- MOBILE MENU (Fullscreen Overlay)    -->
+    <!-- =================================== -->
+    <div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-white dark:bg-gray-900 md:hidden">
+        <div class="flex justify-end p-4">
+            <button id="mobile-menu-close-btn" class="text-gray-500 dark:text-gray-400">
+                <span class="sr-only">Close menu</span>
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <!-- 'About' is now the active link for mobile -->
+        <!-- UPDATED: Added hover/dark:hover classes to mobile links -->
+        <nav class="flex flex-col items-center justify-center h-full space-y-6">
+            <a href="index.html"
+                class="text-xl font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Gallery</a>
+            <a href="videos.html"
+                class="text-xl font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Videos</a>
+            <a href="news.html"
+                class="text-xl font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">News</a>
+            <hr class="w-1/2 border-gray-200 dark:border-gray-700">
+            <a href="profile.html"
+                class="text-xl font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Profile</a>
+            <a href="share.html"
+                class="text-xl font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Share</a>
+            <a href="tools.html"
+                class="text-xl font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Tools</a>
+            <a href="about.html" class="text-xl font-medium text-blue-600 dark:text-blue-400"
+                aria-current="page">About</a>
+        </nav>
+    </div>
+
+    <!-- =================================== -->
+    <!-- MAIN PAGE CONTENT                   -->
+    <!-- =================================== -->
+    <main class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+        <!-- 'max-w-4xl' makes it a standard content width -->
+
+        <!-- Page Header -->
+        <section class="text-center pt-12 pb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+                About Pixelsprompt
+            </h1>
+            <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                Our mission is to build the world's most vibrant and open community for AI creators.
+            </p>
+        </section>
+
+        <!-- Placeholder Content -->
+        <!-- 'prose' is a Tailwind class that beautifully styles blocks of text
+             like this. 'dark:prose-invert' makes it look good on dark mode. -->
+        <section class="prose prose-lg dark:prose-invert max-w-none bg-white dark:bg-gray-800 rounded-lg shadow p-8">
+            <h2>Our Mission</h2>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed ut perspiciatis unde omnis iste natus error
+                sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore
+                veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+            </p>
+            <p>
+                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni
+                dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia
+                dolor sit amet, consectetur, adipisci velit.
+            </p>
+
+            <h2>The Community</h2>
+            <p>
+                Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut
+                aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse
+                quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?
+            </p>
+            <ul>
+                <li>Share your creations.</li>
+                <li>Discover new techniques.</li>
+                <li>Connect with other creators.</li>
+            </ul>
+            <p>
+                At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum
+                deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non
+                provident.
+            </p>
+        </section>
+
+    </main>
+
+    <!-- =================================== -->
+    <!-- FOOTER (Same)                     -->
+    <!-- =================================== -->
+    <footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-16">
+        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-sm text-gray-500 dark:text-gray-400">
+                &copy; 2025 Pixelsprompt. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+
+    <!-- =================================== -->
+    <!-- MODALS / POPUPS (All included, same) -->
+    <!-- =================================== -->
+
+    <!-- Image Detail Popup (Modal) (Same) -->
+    <div id="image-detail-modal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+        <!-- ... (Modal content is identical to other pages) ... -->
+    </div>
+
+    <!-- Nickname Onboarding Popup (Modal) (Same) -->
+    <div id="nickname-popup" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+        <div class="fixed inset-0 bg-black/70 backdrop-blur-sm"></div>
+        <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 w-full max-w-md m-4">
+            <h2 class="text-2xl font-bold mb-4">Welcome to Pixelsprompt!</h2>
+            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                Let's get you set up. Choose a unique nickname to share your creations.
+            </p>
+            <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">@</span>
+                <input type="text" id="nickname-input"
+                    class="w-full pl-7 pr-4 py-2 border rounded-lg bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="your-nickname">
+            </div>
+            <p id="nickname-status" class="text-sm text-red-500 h-5 mt-1"></p>
+            <button id="nickname-submit-btn"
+                class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg disabled:opacity-50"
+                disabled>
+                Claim Nickname
+            </button>
+        </div>
+    </div>
+
+    <!-- Report Post Popup (Modal) (Same) -->
+    <div id="report-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+        <div id="report-modal-overlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm"></div>
+        <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 w-full max-w-md m-4">
+            <h2 class="text-2xl font-bold mb-4">Report Post</h2>
+            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                What's wrong with this post? Please provide a reason so our moderators can review it.
+            </p>
+            <textarea id="report-reason-input"
+                class="w-full p-2 border rounded-lg bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500"
+                rows="4" placeholder="e.g., Explicit content, spam, no prompt..."></textarea>
+            <div class="flex justify-end space-x-3 mt-4">
+                <button id="report-cancel-btn"
+                    class="bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-sm font-medium py-2 px-4 rounded-lg">
+                    Cancel
+                </button>
+                <button id="report-submit-btn"
+                    class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg disabled:opacity-50"
+                    disabled>
+                    Submit Report
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generic Notification / Milestone Popup (Same) -->
+    <div id="notification-toast" class="hidden fixed bottom-5 right-5 z-50 bg-green-600 text-white p-4 rounded-lg shadow-lg max-w-sm
+         transform-gpu translate-x-full opacity-0 transition-all duration-500 ease-in-out">
+        <h4 id="notification-toast-title" class="font-bold">Congratulations!</h4>
+        <p id="notification-toast-message">You've reached 100 likes on your post!</p>
+    </div>
+
+</body>
+
+</html>

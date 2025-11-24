@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pixelsprompt - AI News & Articles</title>
+    <meta name="description" content="Stay up-to-date with the latest news, articles, and breakthroughs in the world of AI.">
+
+    <link rel="icon" href="assets/favicon.ico">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script>
+    tailwind.config = {
+    darkMode: 'class'
+  }
+    </script>
+
+
+    <link rel="stylesheet" href="css/style.css">
+
+    <script type="module" src="js/firebase-config.js"></script>
+
+    <script type="module" src="js/app.js" defer></script>
+</head>
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white font-sans transition-colors duration-300">
+
+    <header id="main-header" class="sticky top-0 z-50 w-full glassmorphic-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="index.html" aria-label="Go to Homepage">
+                        <div class="md:hidden">
+                            <img class="h-[55px] w-auto dark:hidden" src="assets/light/logo-icon.svg" alt="Pixelsprompt Logo">
+                            <img class="h-[55px] w-auto hidden dark:block" src="assets/dark/logo-icon.svg" alt="Pixelsprompt Logo">
+                        </div>
+                        <div class="hidden md:block">
+                            <img class="h-[55px] w-auto dark:hidden" src="assets/light/logo-full.svg" alt="Pixelsprompt Logo">
+                            <img class="h-[55px] w-auto hidden dark:block" src="assets/dark/logo-full.svg" alt="Pixelsprompt Logo">
+                        </div>
+                    </a>
+                </div>
+
+                <nav class="hidden md:flex md:items-center md:space-x-6">
+                    <a href="index.html" class="text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Gallery</a>
+                    <a href="videos.html" class="text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Videos</a>
+                    <a href="news.html" class="text-base font-medium text-blue-600 dark:text-blue-400" aria-current="page">News</a>
+                    <a href="share.html" class="text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Share</a>
+
+                    <div class="relative" id="more-menu-container">
+                        <button id="more-menu-button" class="flex items-center text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+                            <span>More</span>
+                            <svg class="ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        <div id="more-menu-panel" class="hidden absolute z-10 -right-4 mt-3 px-2 w-48 max-w-xs
+                             bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
+                             transform-gpu opacity-0 scale-95">
+                            <div class="py-1">
+                                <a href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
+                                <a href="tools.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Tools</a>
+                                <a href="about.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">About</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+                <div class="flex items-center space-x-4">
+                    <button id="theme-toggle-button" aria-label="Toggle light and dark mode" class="relative w-14 h-7 rounded-full transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <div id="theme-toggle-track" class="w-full h-full rounded-full"></div>
+                        <div id="theme-toggle-thumb" class="absolute top-1 left-1 w-5 h-5 rounded-full bg-yellow-400 dark:bg-gray-300 transition-transform duration-300 ease-in-out">
+                            <div class="absolute w-1 h-1 bg-gray-400 rounded-full top-1 left-1 hidden dark:block"></div>
+                            <div class="absolute w-1 h-1 bg-gray-400 rounded-full top-2 right-1 hidden dark:block"></div>
+                            <div class="absolute w-1.5 h-1.5 bg-gray-400 rounded-full top-3 left-2 hidden dark:block"></div>
+                        </div>
+                        <div class="absolute top-2 left-6 w-4 h-2 bg-white rounded-full dark:hidden"></div>
+                        <div class="absolute top-3 left-4 w-5 h-2 bg-white rounded-full dark:hidden"></div>
+                        <div class="absolute top-1 left-8 w-1 h-1 bg-white rounded-full hidden dark:block"></div>
+                        <div class="absolute top-4 left-10 w-0.5 h-0.5 bg-white rounded-full hidden dark:block"></div>
+                        <div class="absolute top-2 left-11 w-1 h-1 bg-white rounded-full hidden dark:block"></div>
+                    </button>
+
+                    <div id="auth-container" class="relative">
+                        <button id="google-signin-btn" class="hidden bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-lg">
+                            Sign In
+                        </button>
+                        <div id="user-menu" class="hidden flex items-center space-x-4">
+                            <div class="relative" id="notification-container">
+                                <button id="notification-btn" class="relative flex items-center justify-center h-8 w-8 text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">
+                                    <span class="sr-only">View notifications</span>
+                                    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                    </svg>
+                                    <span id="notification-dot" class="hidden absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white dark:border-gray-900"></span>
+                                </button>
+                                
+                                <div id="notification-panel" class="hidden absolute z-10 -right-8 mt-3 w-80 max-w-sm
+                                     bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
+                                     transform-gpu opacity-0 scale-95">
+                                    <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                                        <h3 class="text-lg font-medium">Notifications</h3>
+                                    </div>
+                                    <div id="notification-list" class="p-2 max-h-96 overflow-y-auto">
+                                        <p class="text-sm text-gray-500 p-4 text-center">No new notifications.</p>
+                                    </div>
+                                    <div class="p-2 bg-gray-50 dark:bg-gray-700">
+                                        <a href="#" class="block text-center text-sm font-medium text-blue-600 dark:text-blue-400 hover:underline">
+                                            View all notifications
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="user-avatar-btn" class="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                <span class="sr-only">Open user menu</span>
+                                <img id="user-avatar-img" class="h-8 w-8 rounded-full" src="https://placehold.co/32x32/E0E0E0/B0B0B0?text=?" alt="User Avatar">
+                            </button>
+                            <div id="user-avatar-panel" class="hidden absolute z-10 right-0 mt-3 w-48 bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5 transform-gpu opacity-0 scale-95">
+                                <div class="py-1">
+                                    <a href="profile.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Your Profile</a>
+                                    <a href="share.html" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Share</a>
+                                    <button id="profile-logout-btn" class="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700">Log Out</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center md:hidden">
+                        <button id="mobile-menu-open-btn" class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">
+                            <span class="sr-only">Open main menu</span>
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-white dark:bg-gray-900 md:hidden">
+        <div class="flex justify-end p-4">
+            <button id="mobile-menu-close-btn" class="text-gray-500 dark:text-gray-400">
+                <span class="sr-only">Close menu</span>
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <nav class="flex flex-col items-center justify-center h-full space-y-6">
+            <a href="index.html" class="text-xl font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Gallery</a>
+            <a href="videos.html" class="text-xl font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Videos</a>
+            <a href="news.html" class="text-xl font-medium text-blue-600 dark:text-blue-400" aria-current="page">News</a>
+            <hr class="w-1/2 border-gray-200 dark:border-gray-700">
+            <a href="profile.html" class="text-xl font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Profile</a>
+            <a href="share.html" class="text-xl font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Share</a>
+            <a href="tools.html" class="text-xl font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Tools</a>
+            <a href="about.html" class="text-xl font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">About</a>
+        </nav>
+    </div>
+
+    <main class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-16">
+        
+        <section class="text-center pt-12 pb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold tracking-tight mb-4">
+                AI News & Insights
+            </h1>
+            <p class="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+                The latest articles and breakthroughs from the world of AI, shared by the community.
+            </p>
+        </section>
+
+        <section class="mb-12">
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <input
+                    type="search"
+                    id="search-bar"
+                    placeholder="Search for news articles..."
+                    class="block w-full text-lg p-4 pl-12 rounded-full border-0 bg-gray-100 dark:bg-gray-800 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                >
+            </div>
+        </section>
+
+        <section id="news-feed" class="space-y-6 min-h-[200px]">
+            <div class="text-center text-gray-500 mt-10">Loading news...</div>
+        </section>
+
+        <div id="loading-spinner" class="hidden text-center mt-8">
+            <svg class="animate-spin h-8 w-8 text-blue-600 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">Loading more news...</p>
+        </div>
+
+    </main>
+
+    <footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700">
+        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-sm text-gray-500 dark:text-gray-400">
+                &copy; 2025 Pixelsprompt. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+
+    <div id="image-detail-modal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+        </div>
+
+    <div id="nickname-popup" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+        </div>
+
+    <div id="report-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+        <div id="report-modal-overlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm"></div>
+        <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 w-full max-w-md m-4">
+            <h2 class="text-2xl font-bold mb-4">Report Post</h2>
+            <p class="mb-4 text-gray-600 dark:text-gray-300">
+                What's wrong with this post? Please provide a reason so our moderators can review it.
+            </p>
+            <textarea id="report-reason-input" class="w-full p-2 border rounded-lg bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500" rows="4" placeholder="e.g., Explicit content, spam, no prompt..."></textarea>
+            <div class="flex justify-end space-x-3 mt-4">
+                <button id="report-cancel-btn" class="bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-sm font-medium py-2 px-4 rounded-lg">
+                    Cancel
+                </button>
+                <button id="report-submit-btn" class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg disabled:opacity-50" disabled>
+                    Submit Report
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="notification-toast" class="hidden fixed bottom-5 right-5 z-50 bg-green-600 text-white p-4 rounded-lg shadow-lg max-w-sm
+         transform-gpu translate-x-full opacity-0 transition-all duration-500 ease-in-out">
+        <h4 id="notification-toast-title" class="font-bold">Congratulations!</h4>
+        <p id="notification-toast-message">You've reached 100 likes on your post!</p>
+    </div>
+
+</body>
+</html>

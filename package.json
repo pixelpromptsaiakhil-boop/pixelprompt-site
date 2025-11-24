@@ -1,0 +1,20 @@
+{
+  "name": "pixelsprompt-site",
+  "version": "1.0.0",
+  "description": "Pixelsprompt front-end + build scripts",
+  "scripts": {
+    "dev:tailwind": "tailwindcss -i ./src/input.css -o ./public/assets/styles.css --watch",
+    "build:tailwind": "tailwindcss -i ./src/input.css -o ./public/assets/styles.css --minify",
+    "start": "npm run dev:tailwind",
+    "build": "npm run build:tailwind"
+  },
+  "engines": {
+    "node": "18"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.5.0",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.21"
+  },
+  "private": true
+}

@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixelsprompt - User Profile</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        body: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                            950: '#172554',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link rel="stylesheet" href="css/style.css?v=2">
+
+    <style>
+        /* Fix for the 3-dot menu being cut off */
+        .gallery-card {
+            overflow: visible !important;
+        }
+        /* Ensure the image container keeps the rounded corners */
+        .gallery-card .image-container {
+            overflow: hidden;
+            border-radius: 0.375rem; /* rounded-md */
+        }
+    </style>
+
+    <script src="https://unpkg.com/imagesloaded@5/imagesloaded.pkgd.min.js"></script>
+    <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+
+    <script type="module" src="js/app.js" defer></script>
+</head>
+
+<body class="bg-white dark:bg-gray-900 text-gray-900 dark:text-white font-sans transition-colors duration-300">
+
+    <header id="main-header" class="sticky top-0 z-50 w-full glassmorphic-nav">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="index.html" aria-label="Go to Homepage">
+                        <div class="md:hidden">
+                            <img class="h-[55px] w-auto dark:hidden" src="assets/light/logo-icon.svg"
+                                alt="Pixelsprompt Logo">
+                            <img class="h-[55px] w-auto hidden dark:block" src="assets/dark/logo-icon.svg"
+                                alt="Pixelsprompt Logo">
+                        </div>
+                        <div class="hidden md:block">
+                            <img class="h-[55px] w-auto dark:hidden" src="assets/light/logo-full.svg"
+                                alt="Pixelsprompt Logo">
+                            <img class="h-[55px] w-auto hidden dark:block" src="assets/dark/logo-full.svg"
+                                alt="Pixelsprompt Logo">
+                        </div>
+                    </a>
+                </div>
+
+                <nav class="hidden md:flex md:items-center md:space-x-6">
+                    <a href="index.html"
+                        class="text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Gallery</a>
+                    <a href="videos.html"
+                        class="text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Videos</a>
+                    <a href="news.html"
+                        class="text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">News</a>
+                    <a href="share.html"
+                        class="text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Share</a>
+
+                    <div class="relative" id="more-menu-container">
+                        <button id="more-menu-button"
+                            class="flex items-center text-base font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">
+                            <span>More</span>
+                            <svg class="ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                        <div id="more-menu-panel" class="hidden absolute z-10 -right-4 mt-3 px-2 w-48 max-w-xs
+                             bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
+                             transform-gpu opacity-0 scale-95">
+                            <div class="py-1">
+                                <a href="profile.html"
+                                    class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Profile</a>
+                                <a href="tools.html"
+                                    class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Tools</a>
+                                <a href="about.html"
+                                    class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">About</a>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+
+                <div class="flex items-center space-x-3">
+                    <button id="theme-toggle-button" aria-label="Toggle light and dark mode"
+                        class="relative w-14 h-7 rounded-full transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <div id="theme-toggle-track" class="w-full h-full rounded-full"></div>
+                        <div id="theme-toggle-thumb"
+                            class="absolute top-1 left-1 w-5 h-5 rounded-full bg-yellow-400 dark:bg-gray-300 transition-transform duration-300 ease-in-out">
+                            <div class="absolute w-1 h-1 bg-gray-400 rounded-full top-1 left-1 hidden dark:block"></div>
+                            <div class="absolute w-1 h-1 bg-gray-400 rounded-full top-2 right-1 hidden dark:block">
+                            </div>
+                            <div class="absolute w-1.5 h-1.5 bg-gray-400 rounded-full top-3 left-2 hidden dark:block">
+                            </div>
+                        </div>
+                        <div class="absolute top-2 left-6 w-4 h-2 bg-white rounded-full dark:hidden"></div>
+                        <div class="absolute top-3 left-4 w-5 h-2 bg-white rounded-full dark:hidden"></div>
+                        <div class="absolute top-1 left-8 w-1 h-1 bg-white rounded-full hidden dark:block"></div>
+                        <div class="absolute top-4 left-10 w-0.5 h-0.5 bg-white rounded-full hidden dark:block"></div>
+                        <div class="absolute top-2 left-11 w-1 h-1 bg-white rounded-full hidden dark:block"></div>
+                    </button>
+
+                    <div id="auth-container" class="relative">
+                        <button id="google-signin-btn"
+                            class="hidden bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-lg">
+                            Sign In
+                        </button>
+
+                        <div id="user-menu" class="hidden flex items-center space-x-4">
+                            <div class="relative" id="notification-container">
+                                <button id="notification-btn"
+                                    class="relative text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">
+                                    <span class="sr-only">View notifications</span>
+                                    <svg class="h-8 w-8" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                                    </svg>
+                                    <span id="notification-dot"
+                                        class="hidden absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white dark:border-gray-900"></span>
+                                </button>
+
+                                <div id="notification-panel" class="hidden absolute z-10 -right-8 mt-3 w-80 max-w-sm
+                                     bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
+                                     transform-gpu opacity-0 scale-95">
+                                    <div class="p-4 border-b border-gray-200 dark:border-gray-700">
+                                        <h3 class="text-lg font-medium">Notifications</h3>
+                                    </div>
+                                    <div id="notification-list" class="p-2 max-h-96 overflow-y-auto">
+                                        </div>
+                                </div>
+                            </div>
+
+                            <div class="relative" id="user-avatar-container">
+                                <button id="user-avatar-btn"
+                                    class="flex text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                    <span class="sr-only">Open user menu</span>
+                                    <img id="user-avatar-img" class="h-8 w-8 rounded-full"
+                                        src="https://placehold.co/32x32/E0E0E0/B0B0B0?text=?" alt="User Avatar">
+                                </button>
+
+                                <div id="user-avatar-panel" class="hidden absolute z-10 right-0 mt-3 w-48
+                                     bg-white dark:bg-gray-800 rounded-md shadow-lg ring-1 ring-black ring-opacity-5
+                                     transform-gpu opacity-0 scale-95">
+                                    <div class="py-1" role="menu">
+                                        <a href="profile.html"
+                                            class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                            role="menuitem">Your Profile</a>
+                                        <a href="share.html"
+                                            class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                            role="menuitem">Share</a>
+                                        <button id="profile-logout-btn"
+                                            class="w-full text-left px-4 py-2 text-sm text-red-600 dark:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                            role="menuitem">
+                                            Log Out
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center md:hidden">
+                        <button id="mobile-menu-open-btn"
+                            class="text-gray-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400">
+                            <span class="sr-only">Open main menu</span>
+                            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div id="mobile-menu" class="hidden fixed inset-0 z-40 bg-white dark:bg-gray-900 md:hidden">
+        <div class="flex justify-end p-4">
+            <button id="mobile-menu-close-btn" class="text-gray-500 dark:text-gray-400">
+                <span class="sr-only">Close menu</span>
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <nav class="flex flex-col items-center justify-center h-full space-y-6">
+            <a href="index.html"
+                class="text-xl font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Gallery</a>
+            <a href="videos.html"
+                class="text-xl font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Videos</a>
+            <a href="news.html"
+                class="text-xl font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">News</a>
+            <hr class="w-1/2 border-gray-200 dark:border-gray-700">
+            <a href="profile.html" class="text-xl font-medium text-blue-600 dark:text-blue-400"
+                aria-current="page">Profile</a>
+            <a href="share.html"
+                class="text-xl font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Share</a>
+            <a href="tools.html"
+                class="text-xl font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">Tools</a>
+            <a href="about.html"
+                class="text-xl font-medium text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400">About</a>
+        </nav>
+    </div>
+
+    <main class="w-full">
+
+        <section class="relative bg-gray-200 dark:bg-gray-700 h-48 md:h-64">
+            <img id="profile-banner-img" src="https://placehold.co/1500x400/333333/555555?text=Cover+Photo"
+                alt="User's banner image" class="w-full h-full object-cover" />
+            <button id="edit-banner-btn"
+                class="hidden absolute top-4 right-4 bg-black/50 text-white p-2 rounded-full hover:bg-black/70">
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path
+                        d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                </svg>
+            </button>
+        </section>
+
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="-mt-16 md:-mt-24 relative z-10">
+                <div class="flex flex-col md:flex-row md:items-end md:justify-between">
+                    <div class="flex items-end space-x-5">
+                        <div class="relative">
+                            <img id="profile-avatar-img"
+                                class="h-24 w-24 md:h-32 md:w-32 rounded-full ring-4 ring-white dark:ring-gray-900 object-cover"
+                                src="https://placehold.co/128x128/E0E0E0/B0B0B0?text=A" alt="User's avatar">
+                            <button id="edit-avatar-btn"
+                                class="hidden absolute bottom-0 right-0 bg-black/50 text-white p-2 rounded-full hover:bg-black/70">
+                                <svg class="h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+                                    fill="currentColor">
+                                    <path
+                                        d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="pb-2">
+                            <h1 id="profile-display-name" class="text-2xl font-bold">Display Name</h1>
+                            <p id="profile-nickname" class="text-sm text-gray-500 dark:text-gray-400">@nickname</p>
+                        </div>
+                    </div>
+
+                    <div
+                        class="mt-4 md:mt-0 flex flex-col md:flex-row items-center space-y-4 md:space-y-0 md:space-x-4">
+                        <div class="flex space-x-6 text-center">
+                            <div>
+                                <p class="text-xl font-bold" id="profile-posts-count">120</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Posts</p>
+                            </div>
+                            <div>
+                                <p class="text-xl font-bold" id="profile-followers-count">1.4k</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Followers</p>
+                            </div>
+                            <div>
+                                <p class="text-xl font-bold" id="profile-following-count">210</p>
+                                <p class="text-sm text-gray-500 dark:text-gray-400">Following</p>
+                            </div>
+                        </div>
+
+                        <div id="other-user-actions" class="hidden space-x-3">
+                            <button id="profile-follow-btn"
+                                class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg text-sm">Follow</button>
+                            <button id="profile-report-user-btn"
+                                class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 font-medium py-2 px-4 rounded-lg text-sm">Report
+                                User</button>
+                        </div>
+
+                        <div id="own-profile-actions" class="hidden space-x-3">
+                            <button id="profile-edit-btn"
+                                class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 font-medium py-2 px-4 rounded-lg text-sm">Edit
+                                Profile</button>
+                            </div>
+                    </div>
+                </div>
+
+                <p id="profile-bio" class="mt-4 text-gray-700 dark:text-gray-300 max-w-2xl">This is the user's bio. It
+                    can be a short description of who they are and what they create.</p>
+            </div>
+        </section>
+
+        <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12">
+            <div class="border-b border-gray-200 dark:border-gray-700">
+                <nav id="profile-tabs" class="flex space-x-4" aria-label="Tabs">
+                    <button class="profile-tab-btn active" data-tab="posts">Posts</button>
+                    <button class="profile-tab-btn" data-tab="liked">Liked</button>
+                    <button class="profile-tab-btn" data-tab="analytics" id="analytics-tab-btn">Analytics</button>
+                    <button class="profile-tab-btn" data-tab="settings" id="settings-tab-btn">Account Settings</button>
+                </nav>
+            </div>
+
+            <div class="mt-8">
+                <div id="posts-panel" class="profile-tab-panel">
+                    <section class="masonry-grid" aria-live="polite" aria-busy="true">
+                        <article class="gallery-card group relative rounded-lg overflow-hidden mb-4">
+                            <img src="https://placehold.co/400x500/33cc33/FFFFFF?text=User+Post" alt="A user post"
+                                class="w-full h-auto" loading="lazy">
+                            <div
+                                class="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
+                                <div class="flex justify-between items-center text-white text-xs">
+                                    <span>
+                                        <svg class="inline h-4 w-4" fill="none" viewBox="0 0 24 24"
+                                            stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                        2.5k
+                                    </span>
+                                    <span>
+                                        <svg class="inline h-4 w-4" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        312
+                                    </span>
+                                </div>
+                            </div>
+                        </article>
+                    </section>
+                </div>
+
+                <div id="liked-panel" class="profile-tab-panel hidden">
+                    <section class="masonry-grid">
+                        <article class="gallery-card group relative rounded-lg overflow-hidden mb-4">
+                            <img src="https://placehold.co/400x400/ff6600/FFFFFF?text=Liked+Post" alt="A liked post"
+                                class="w-full h-auto" loading="lazy">
+                        </article>
+                    </section>
+                </div>
+
+                <div id="analytics-panel" class="profile-tab-panel hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+                            <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Views</h3>
+                            <p class="text-3xl font-bold" id="analytics-total-views">130.2k</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+                            <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Likes</h3>
+                            <p class="text-3xl font-bold" id="analytics-total-likes">8.7k</p>
+                        </div>
+                        <div class="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-sm">
+                            <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Top Performing Post</h3>
+                            <p class="text-xl font-bold truncate" id="analytics-top-post-title">"Cyberpunk Cityscape"
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="settings-panel" class="profile-tab-panel hidden">
+                    <form id="profile-settings-form" class="max-w-lg space-y-6">
+                        <div>
+                            <label for="settings-display-name" class="block text-sm font-medium">Display Name</label>
+                            <input type="text" id="settings-display-name"
+                                class="mt-1 block w-full p-2 border rounded-md bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Your display name" />
+                        </div>
+                        <div>
+                            <label for="settings-bio" class="block text-sm font-medium">Bio</label>
+                            <textarea id="settings-bio" rows="4"
+                                class="mt-1 block w-full p-2 border rounded-md bg-gray-50 dark:bg-gray-900 border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500"
+                                placeholder="Tell the community about yourself..."></textarea>
+                        </div>
+                        <button type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg">Save
+                            Changes</button>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 mt-16">
+        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-sm text-gray-500 dark:text-gray-400">&copy; 2025 Pixelsprompt. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="image-detail-modal" class="hidden fixed inset-0 z-50 overflow-y-auto">
+        <div id="image-detail-overlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm"></div>
+        <div class="relative w-full max-w-6xl mx-auto my-16 rounded-lg overflow-hidden">
+            <button id="image-detail-close-btn"
+                class="absolute top-4 right-4 z-20 text-white bg-black/30 rounded-full p-1.5 hover:bg-black/50">
+                <span class="sr-only">Close modal</span>
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 bg-white dark:bg-gray-800">
+                <div class="bg-black flex items-center justify-center p-4 lg:p-8 min-h-[50vh] lg:min-h-0">
+                    <img id="modal-image" src="https://placehold.co/1024x1024/000000/FFFFFF?text=Preview"
+                        alt="Detailed prompt image" class="max-w-full max-h-[80vh] object-contain">
+                    <video id="modal-video" class="hidden max-w-full max-h-[80vh] object-contain" controls>
+                        <source src="" type="video/mp4">Your browser does not support the video tag.
+                    </video>
+                </div>
+
+                <div class="flex flex-col max-h-[90vh]">
+                    <div class="flex-1 overflow-y-auto p-6 md:p-8">
+                        <div class="flex justify-between items-center mb-4">
+                            <a href="profile.html" id="modal-author-link" class="flex items-center group">
+                                <img id="modal-author-avatar" src="https://placehold.co/40x40/E0E0E0/B0B0B0?text=A"
+                                    alt="Author Avatar" class="w-10 h-10 rounded-full mr-3">
+                                <div>
+                                    <h2 id="modal-title" class="text-xl font-bold">Cyberpunk Cityscape</h2>
+                                    <p id="modal-author-name"
+                                        class="text-sm text-gray-600 dark:text-gray-300 group-hover:text-blue-500">by
+                                        @PixelArtisan</p>
+                                </div>
+                            </a>
+                            <button id="modal-follow-btn"
+                                class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-lg">Follow</button>
+                        </div>
+
+                        <div class="flex items-center space-x-4 mb-4">
+                            <button id="modal-like-btn"
+                                class="flex items-center space-x-1 text-gray-600 dark:text-gray-300 hover:text-red-500">
+                                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 20.364l-7.682-7.682a4.5 4.5 0 010-6.364z" />
+                                </svg>
+                                <span id="modal-like-count">1.1k</span>
+                            </button>
+                            <button id="modal-report-btn"
+                                class="text-sm text-gray-500 dark:text-gray-400 hover:text-red-600">Report Post</button>
+                        </div>
+
+                        <div class="mb-4">
+                            <h3 class="font-semibold mb-2">Prompt</h3>
+                            <div class="bg-gray-100 dark:bg-gray-900 rounded-lg p-4 max-h-48 overflow-y-auto">
+                                <p id="modal-prompt-text" class="text-sm">A stunning ultra-wide cinematic photo of a
+                                    cyberpunk city at night, neon lights, flying cars, rainy, high resolution, 8k,
+                                    photorealistic, octane render, detailed, --ar 16:9</p>
+                            </div>
+                            <button id="modal-copy-prompt-btn"
+                                class="w-full mt-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-sm font-medium py-2 px-4 rounded-lg">Copy
+                                Prompt</button>
+                        </div>
+
+                        <div id="modal-cfg-rating-box" class="hidden mb-4 p-4 bg-blue-50 dark:bg-gray-700 rounded-lg">
+                            <label for="cfg-rating-slider" class="block text-sm font-medium mb-2">How accurate was this
+                                prompt?</label>
+                            <div class="flex items-center space-x-3">
+                                <input id="cfg-rating-slider" type="range" min="1" max="10" value="5" class="w-full">
+                                <span id="cfg-rating-value" class="text-lg font-bold w-12 text-center">5</span>
+                                <span id="cfg-rating-emoji" class="text-2xl w-8 text-center">🙂</span>
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <h3 class="font-semibold mb-2">Details</h3>
+                            <ul class="space-y-1 text-sm text-gray-600 dark:text-gray-300">
+                                <li id="modal-date"><strong>Posted:</strong> Nov 15, 2025</li>
+                                <li id="modal-views"><strong>Views:</strong> 12,480</li>
+                                <li id="modal-model"><strong>Model:</strong> Midjourney v6</li>
+                                <li id="modal-aspect-ratio"><strong>Aspect Ratio:</strong> 16:9</li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h3 class="font-semibold mb-4">Comments (<span id="modal-comment-count">0</span>)</h3>
+                            <div class="mb-4">
+                                <textarea id="modal-comment-input"
+                                    class="w-full p-2 border rounded-lg bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500"
+                                    rows="2" placeholder="Add a comment..."></textarea>
+                                <button id="modal-comment-submit"
+                                    class="mt-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 px-4 rounded-lg">Post
+                                    Comment</button>
+                            </div>
+                            <div id="modal-comment-list" class="space-y-4">
+                                <p class="text-sm text-gray-500">No comments yet.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="nickname-popup" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+        <div class="fixed inset-0 bg-black/70 backdrop-blur-sm"></div>
+        <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 w-full max-w-md m-4">
+            <h2 class="text-2xl font-bold mb-4">Welcome to Pixelsprompt!</h2>
+            <p class="mb-4 text-gray-600 dark:text-gray-300">Let's get you set up. Choose a unique nickname to share
+                your creations.</p>
+            <div class="relative">
+                <span class="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-500">@</span>
+                <input type="text" id="nickname-input"
+                    class="w-full pl-7 pr-4 py-2 border rounded-lg bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500"
+                    placeholder="your-nickname">
+            </div>
+            <p id="nickname-status" class="text-sm text-red-500 h-5 mt-1"></p>
+            <button id="nickname-submit-btn"
+                class="w-full mt-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg disabled:opacity-50"
+                disabled>Claim Nickname</button>
+        </div>
+    </div>
+
+    <div id="report-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center">
+        <div id="report-modal-overlay" class="fixed inset-0 bg-black/70 backdrop-blur-sm"></div>
+        <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl p-8 w-full max-w-md m-4">
+            <h2 class="text-2xl font-bold mb-4">Report Post</h2>
+            <p class="mb-4 text-gray-600 dark:text-gray-300">What's wrong with this post? Please provide a reason so our
+                moderators can review it.</p>
+            <textarea id="report-reason-input"
+                class="w-full p-2 border rounded-lg bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500"
+                rows="4" placeholder="e.g., Explicit content, spam, no prompt..."></textarea>
+            <div class="flex justify-end space-x-3 mt-4">
+                <button id="report-cancel-btn"
+                    class="bg-gray-200 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-500 text-sm font-medium py-2 px-4 rounded-lg">Cancel</button>
+                <button id="report-submit-btn"
+                    class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg disabled:opacity-50"
+                    disabled>Submit Report</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="notification-toast"
+        class="hidden fixed bottom-5 right-5 z-50 bg-green-600 text-white p-4 rounded-lg shadow-lg max-w-sm transform-gpu translate-x-full opacity-0 transition-all duration-500 ease-in-out">
+        <h4 id="notification-toast-title" class="font-bold">Congratulations!</h4>
+        <p id="notification-toast-message">You've reached 100 likes on your post!</p>
+    </div>
+
+    <div id="delete-confirm-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center">
+        <div class="fixed inset-0 bg-black/80 backdrop-blur-sm"></div>
+        <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-sm m-4 border border-gray-200 dark:border-gray-700">
+            <div class="text-center">
+                <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-red-100 dark:bg-red-900 mb-4">
+                    <svg class="h-6 w-6 text-red-600 dark:text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white mb-2">Delete Post?</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400">Are you sure you want to delete this? This action cannot be undone.</p>
+            </div>
+            <div class="mt-6 flex justify-center space-x-3">
+                <button id="cancel-delete-btn" class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium py-2 px-4 rounded-lg text-sm transition-colors">
+                    Cancel
+                </button>
+                <button id="confirm-delete-btn" class="bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-lg text-sm shadow-lg shadow-red-500/30 transition-all">
+                    Yes, Delete it
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="edit-post-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center overflow-y-auto">
+        <div class="fixed inset-0 bg-black/80 backdrop-blur-sm"></div>
+        <div class="relative bg-white dark:bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-lg m-4 border border-gray-200 dark:border-gray-700">
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Edit Post</h3>
+            <form id="edit-post-form" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Title</label>
+                    <input type="text" id="edit-post-title" class="w-full p-2 border rounded-lg bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Prompt / Description</label>
+                    <textarea id="edit-post-prompt" rows="4" class="w-full p-2 border rounded-lg bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500" required></textarea>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Tags (comma separated)</label>
+                    <input type="text" id="edit-post-tags" class="w-full p-2 border rounded-lg bg-gray-100 dark:bg-gray-900 border-gray-300 dark:border-gray-600 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div class="flex justify-end space-x-3 mt-6">
+                    <button type="button" id="cancel-edit-btn" class="bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-medium py-2 px-4 rounded-lg text-sm transition-colors">
+                        Cancel
+                    </button>
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-lg text-sm transition-colors">
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <input type="file" id="avatar-upload-input" class="hidden" accept="image/*">
+    <input type="file" id="banner-upload-input" class="hidden" accept="image/*">
+
+</body>
+
+</html>
